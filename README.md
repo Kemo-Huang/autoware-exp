@@ -1,6 +1,8 @@
 # Autoware YOLOv3 and PointPillars
 
-Author: 黄珂邈  Last update: 2019.9.4
+Author: Kemiao HUANG
+
+Last update: 2019.9.4
 
 ### 1. Install Autoware.AI from Source
 
@@ -16,7 +18,7 @@ Download ROSBAG files from server.
 
 ```bash
 sftp dataset@10.20.45.112 
-# password: ds#1316
+# Password is not shown here. You may use other rosbag from web or record you rosbug by yourselves. If you want to use our dataset, please contact me.
 cd 2019-03-24/
 get 2019-03-24-16-29_X.bag
 ```
@@ -27,7 +29,11 @@ Extract topics from bags to fit Autoware format.
 python2.7 extract_topics.py in.bag out.bag
 ```
 
-### 3. Run Autoware
+### 3. Download Weights
+
+Use the pre-trained weights for pointpillars and yolov3 or train your own models. For more details, please see `README.md` in Autoware **perception**  modules.
+
+### 4. Run Autoware
 
 Run ROS and rosbag.
 
