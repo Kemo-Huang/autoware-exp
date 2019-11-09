@@ -1,0 +1,43 @@
+<launch>
+  
+  <!-- Setting of this launch file -->
+  <arg name="model_path" default="/home/kemo/Documents/实习/vehicle_model.urdf" />
+  <arg name="pfe_onnx_path" default="/home/kemo/Documents/实习/weights/pfe.onnx" />
+  <arg name="rpn_onnx_path" default="/home/kemo/Documents/实习/weights/rpn.onnx" />
+  <arg name="pretrained_model_file" default="/home/kemo/Documents/实习/weights/yolov3.weights"/>
+  
+  <arg name="yolo_score_threshold" default="0.5" />
+  <arg name="yolo_nms_threshold" default="0.45" />
+  <arg name="pp_score_threshold" default="0.7" />
+  <arg name="pp_nms_overlap_threshold" default="0.5" />
+  
+
+  <!-- TF -->
+  <node pkg="tf"  type="static_transform_publisher" name="pandar_to_world" args="0 0 0 0 0 0 /pandar /world 100" />
+  <node pkg="tf"  type="static_transform_publisher" name="world_to_baselink" args="0 0 0 0 0 0 /world /base_link 10" />
+  <node pkg="tf"  type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 /world /map 100" />
+  <node pkg="tf"  type="static_transform_publisher" name="pandar_to_velodyne" args="0 0 0 0 0 0 /pandar /velodyne 100" />
+
+  <!-- Vehicle -->
+  <include file="$(find vehicle_description)/launch/vehicle_model.launch">
+    <arg name="model_path" value="$(arg model_path)" />
+  </include>
+  
+  <!-- YOLOv3 -->
+  <include file="$(find vision_darknet_detect)/launch/vision_yolo3_detect.launch">
+    <arg name="pretrained_model_file" value="$(arg pretrained_model_file)" />
+    <arg name="score_threshold" value="$(arg yolo_score_threshold)" />
+    <arg name="nms_threshold" value="$(arg yolo_nms_threshold)" />
+  </include>
+
+  <!-- PointPillars -->
+  <include file="$(find lidar_point_pillars)/launch/lidar_point_pillars.launch">
+    <arg name="baselink_support" value="false" />
+    <arg name="reproduce_result_mode" value="false" />
+    <arg name="score_threshold" value="$(arg pp_score_threshold)" />
+    <arg name="nms_overlap_threshold" value="$(arg pp_nms_overlap_threshold)" />
+    <arg name="pfe_onnx_file" value="$(arg pfe_onnx_path)"/>
+    <arg name="rpn_onnx_file" value="$(arg rpn_onnx_path)"/>
+  </include>
+
+</launch>

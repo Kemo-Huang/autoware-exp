@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="car">
+
+  
+  <link name="pandar">
+    <visual name="base_visual">
+      <origin xyz="0 0 -2" rpy="1.57 0 2.95" />
+      <geometry>
+        <mesh filename="package://vehicle_description/mesh/CAR_original.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+ 
+
+  
+</robot>
